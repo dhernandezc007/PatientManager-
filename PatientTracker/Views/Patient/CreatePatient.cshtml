@@ -1,0 +1,198 @@
+﻿@model PatientTracker.Models.PatientModel
+
+@{
+    ViewData["Title"] = "CreatePatient";
+}
+
+<h1>CreatePatient</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreatePatient">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <!-- Headache Dropdown -->
+            <div class="form-group">
+                <label>Does the patient have a headache?</label>
+                <select id="headacheExists" name="headacheExists" class="form-control">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>
+
+            <!-- Headache Pain -->
+            <div class="form-group">
+                <label>Rate pain of headache (0-10)</label>
+                <select id="headachePainValue" name="headachePainValue" class="form-control">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+
+            <!-- Chest Pain Dropdown -->
+            <div class="form-group">
+                <label>Does the patient have chest pain?</label>
+                <select id="chestpainExists" name="chestpainExists" class="form-control">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>
+
+
+            <!-- Chest Pain Value -->
+            <div class="form-group">
+                <label>Rate chest pain (0-10)</label>
+                <select id="chestPainValue" name="chestPainValue" class="form-control">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+
+            <!-- Muscle Ache Dropdown -->
+            <div class="form-group">
+                <label>Does the patient have muscle aches?</label>
+                <select id="muscleacheExists" name="muscleacheExists" class="form-control">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>
+
+
+            <!-- Muscle Ache Pain Value -->
+            <div class="form-group">
+                <label>Rate pain of muscle aches (0-10)</label>
+                <select id="muscleAcheValue" name="muscleAcheValue" class="form-control">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <!-- jQuery for dropdown functionality -->
+    <script>
+        $(document).ready(function () {
+            
+            $('#headacheExists').change(function () {
+                if ($(this).val() === "true") {
+                    $('#headachePainValue').prop("disabled", false);
+                } else {
+                    $('#headachePainValue').val("0").prop("disabled", true);
+                }
+            });
+
+            $('#chestpainExists').change(function () {
+                if ($(this).val() === "true") {
+                    $('#chestPainValue').prop("disabled", false);
+                } else {
+                    $('#chestPainValue').val("0").prop("disabled", true);
+                }
+            });
+
+            $('#muscleacheExists').change(function () {
+                if ($(this).val() === "true") {
+                    $('#muscleAcheValue').prop("disabled", false);
+                } else {
+                    $('#muscleAcheValue').val("0").prop("disabled", true);
+                }
+            });
+
+            $('#headachePainValue').change(function () {
+                handleCriticalPain('headachePainValue');
+            });
+
+            $('#chestPainValue').change(function () {
+                handleCriticalPain('chestPainValue');
+            });
+
+            $('#muscleAcheValue').change(function () {
+                handleCriticalPain('muscleAcheValue');
+            });
+
+            function handleCriticalPain(changedId) {
+                let isTen = $('#' + changedId).val() === "10";
+
+                if (isTen) {
+     
+                    if (changedId !== 'headachePainValue') {
+                        $('#headachePainValue').val("0").prop("disabled", true);
+                    }
+                    if (changedId !== 'chestPainValue') {
+                        $('#chestPainValue').val("0").prop("disabled", true);
+                    }
+                    if (changedId !== 'muscleAcheValue') {
+                        $('#muscleAcheValue').val("0").prop("disabled", true);
+                    }
+                } else {
+             
+                    if ($('#headacheExists').val() === "true")
+                        $('#headachePainValue').prop("disabled", false);
+
+                    if ($('#chestpainExists').val() === "true")
+                        $('#chestPainValue').prop("disabled", false);
+
+                    if ($('#muscleacheExists').val() === "true")
+                        $('#muscleAcheValue').prop("disabled", false);
+                }
+            }
+
+            $('#headacheExists').trigger('change');
+            $('#chestpainExists').trigger('change');
+            $('#muscleacheExists').trigger('change');
+
+        });
+
+    </script>
+}

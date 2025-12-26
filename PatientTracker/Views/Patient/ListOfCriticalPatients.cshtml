@@ -1,0 +1,84 @@
+﻿@model IEnumerable<PatientTracker.Models.PatientModel>
+
+@{
+    ViewData["Title"] = "ListOfCriticalPatients";
+}
+
+<h1>ListOfCriticalPatients</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.headacheExists)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.headachePainValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.chestpainExists)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.chestPainValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.muscleacheExists)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.muscleAcheValue)
+            </th>
+            <th>Diagram</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model){
+        if (item.headachePainValue == 10 || item.chestPainValue == 10 || item.muscleAcheValue == 10)
+        {
+                <tr>
+                  <td>@item.Id</td>
+                  <td>@item.FirstName</td>
+                  <td>@item.LastName</td>
+                  <td>@(item.headacheExists ? "Yes" : "No")</td>
+                  <td>@item.headachePainValue</td>
+                  <td>@(item.chestpainExists ? "Yes" : "No")</td>
+                  <td>@item.chestPainValue</td>
+                  <td>@(item.muscleacheExists ? "Yes" : "No")</td>
+                  <td>@item.muscleAcheValue</td>
+                  <td>
+                    @if (item.headachePainValue == 10)
+                    {
+                         <img src="~/images/headache.jpg" alt="Headache" style="width: 100px; height: auto;" />
+                    }
+                    else if (item.chestPainValue == 10)
+                    {
+                         <img src="~/images/chestpain.jpg" alt="Chest Pain" style="width: 100px; height: auto;" />
+                    }
+                    else if (item.muscleAcheValue == 10)
+                    {
+                         <img src="~/images/muscleache.jpg" alt="Muscle Ache" style="width: 100px; height: auto;" />
+                    }
+                  </td>
+ 
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+        }     
+    }
+    </tbody>
+</table>
